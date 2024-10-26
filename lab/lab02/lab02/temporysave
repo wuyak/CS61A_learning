@@ -1,0 +1,23 @@
+
+#ok test your course pratice code
+function okq() {
+    if [[ $1 =~ ^[1-9]$ ]]; then
+        num="0$1"
+        python3 ok --local -q "$num" "${@:2}"
+    else
+        python3 ok --local -q "$@"
+    fi
+}
+
+function okqu() {
+    if [[ $1 =~ ^[1-9]$ ]]; then
+        num="0$1"
+        python3 ok --local -q "$num" -u
+    else
+        python3 ok --local -q "$@" -u
+    fi
+}
+
+function ok() {
+    python3 ok --local $@
+}
