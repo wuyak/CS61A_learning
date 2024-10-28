@@ -63,7 +63,6 @@ def digit_distance(n):
     elif n > 10:
         return abs(n % 100 // 10 - n % 10) + digit_distance(n // 10)
 
-
 def interleaved_sum(n, odd_func, even_func):
     """Compute the sum odd_func(1) + even_func(2) + odd_func(3) + ..., up
     to n.
@@ -210,5 +209,3 @@ def make_anonymous_factorial():
     ...     ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'FunctionDef', 'Recursion'])
     True
     """
-    return lambda 
-
