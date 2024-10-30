@@ -1,2 +1,9 @@
-def index(keys, values, match):
-    return {k: [v for v in values if match(k, v)] for k in keys}
+from tree_define import *
+
+
+def count_paths(t, total):
+    if label(t) == total:
+        found = 1
+    else:
+        found = 0
+    return found + sum(count_paths(b, total - label(t)) for b in branches(t))
