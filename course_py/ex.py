@@ -1,9 +1,10 @@
-from tree_define import *
+def plus_minus(x):
+    yield x
+    yield -x
 
 
-def count_paths(t, total):
-    if label(t) == total:
-        found = 1
-    else:
-        found = 0
-    return found + sum(count_paths(b, total - label(t)) for b in branches(t))
+def evens(start, end):
+    even = start + (start % 2)
+    while even < end:
+        yield even
+        even += 2
