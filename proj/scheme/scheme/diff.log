@@ -1,0 +1,209 @@
+只在 ./ 中存在：abstract_turtle
+只在 ./ 中存在：diff.log
+只在 ./ 中存在：editor
+只在 ./ 中存在：images
+只在 ./ 中存在：mytests.rst
+只在 ./ 中存在：ok
+只在 ./ 中存在：.ok_history
+只在 ./ 中存在：.ok_storage
+只在 ./ 中存在：pair.py
+只在 ./ 中存在：proj04.ok
+只在 ./ 中存在：__pycache__
+只在 ./ 中存在：questions.scm
+只在 ./ 中存在：.scheme_builtins.py.swp
+diff --color ./scheme_classes.py /home/kino/Documents/UCBerkeley-CS61A-Fall2023-Projects-04_scheme/scheme_classes.py
+39c39
+<         if self.parent:
+---
+>         elif self.parent != None:
+40a41
+>         # END PROBLEM 1
+59,60c60,61
+<         child_frame = Frame(self)
+<         while formals:
+---
+>         child_frame = Frame(parent=self)
+>         while formals != nil:
+63a65
+> 
+diff --color ./scheme_eval_apply.py /home/kino/Documents/UCBerkeley-CS61A-Fall2023-Projects-04_scheme/scheme_eval_apply.py
+1d0
+< from re import I
+38,40c37,39
+<         operator = scheme_eval(first, env)
+<         operands = rest.map(lambda operand: scheme_eval(operand, env))
+<         return scheme_apply(operator, operands, env)
+---
+>         procedure = scheme_eval(first, env)
+>         args = rest.map(lambda operand: scheme_eval(operand, env))
+>         return scheme_apply(procedure, args, env)
+52,55c51,53
+<         # convert pair args to list
+<         args_list = []
+<         while args:
+<             args_list.append(args.first)
+---
+>         link_lst = []
+>         while args != nil:
+>             link_lst.append(args.first)
+57,58c55,56
+<         if procedure.need_env:
+<             args_list.append(env)
+---
+>         if procedure.need_env == True:
+>             link_lst.append(env)
+63,64c61
+<             # unzip list args_list
+<             return procedure.py_func(*args_list)
+---
+>             return procedure.py_func(*link_lst)
+71,81d67
+<         """
+<         Now procedure is a LambdaProcedure class defined by lambda x: f(x) already! So
+<         this function means calling the variable bound to the LambdaProcedure class, not
+<         creating a LambdaProcedure class environment
+< 
+<         When the command above creates a LambdaProcedure like square defined as
+<         (lambda (x) (* x x)), it sets x as the formal parameter and (* x x) as
+<         the body. Now, when we call (square 4), we should create a child frame
+<         where x is bound to 4, so pass procedure.formals and args to make_child_frame.
+<         Then we evaluate the body, (* x x), in this child frame.
+<         """
+88,91c74,75
+<         """
+<         MuProcedure has no attribute 'env', so use current env
+<         """
+<         child_frame = env.make_child_frame(procedure.formals, args)
+---
+>         child_frame = env.make_child_frame(procedure.formals, args) # the current env (in which the call expression was evaluated) 
+>                                                                     # rather than the procedure env
+118c102
+<     return scheme_eval(expressions.first, env, True)
+---
+>     return scheme_eval(expressions.first, env, True) # replace this with lines of your own code
+122,124c106,108
+< ################################
+< # Extra Credit: Tail Recursion #
+< ################################
+---
+> ##################
+> # Tail Recursion #
+> ##################
+176a161
+> 
+只在 ./ 中存在：.scheme_eval_apply.py.swp
+diff --color ./scheme_forms.py /home/kino/Documents/UCBerkeley-CS61A-Fall2023-Projects-04_scheme/scheme_forms.py
+40c40,43
+<         env.define(signature, scheme_eval(expressions.rest.first, env))
+---
+>         value = scheme_eval(expressions.rest.first, env) # do_define_form(read_line("(x (+ 2 8))"), env) <- (x (+ 2 8))
+>                                                          # expr = Pair('x', Pair( Pair('+', Pair(2, Pair(8, nil))), nil) )
+>                                                          # expr.rest.first = Pair('+', Pair(2, Pair(8, nil))) to get the to-be-evaluated expression
+>         env.define(signature, value) # add the "symbol:value" to the current env
+47,48c50,53
+<         lam_expre = Pair(signature.rest, expressions.rest)
+<         env.define(signature.first, do_lambda_form(lam_expre, env))
+---
+>         formals = signature.rest
+>         expressions_without_signature = Pair(formals, expressions.rest)
+>         value = do_lambda_form(expressions_without_signature, env)
+>         env.define(signature.first, value)
+92c97,98
+<     return LambdaProcedure(formals, expressions.rest, env)
+---
+>     body = expressions.rest
+>     return LambdaProcedure(formals, body, env)
+126,130c132,140
+<     result = True
+<     while expressions is not nil:
+<         result = scheme_eval(expressions.first, env)
+<         if is_scheme_false(result):
+<             return result
+---
+>     if expressions == nil:
+>         return True
+>     while expressions != nil:
+>         if expressions.rest == nil:
+>             value = scheme_eval(expressions.first, env, True)
+>         else:
+>             value = scheme_eval(expressions.first, env)
+>         if is_scheme_false(value):
+>             return False
+132c142,143
+<     return result
+---
+>     return value
+>     # END PROBLEM 12
+150,154c161,169
+<     result = False
+<     while expressions is not nil:
+<         result = scheme_eval(expressions.first, env)
+<         if is_scheme_true(result):
+<             return result
+---
+>     if expressions == nil:
+>         return False
+>     while expressions != nil:
+>         if expressions.rest == nil:
+>             value = scheme_eval(expressions.first, env, True)
+>         else:
+>             value = scheme_eval(expressions.first, env)
+>         if is_scheme_true(value):
+>             return value
+156c171
+<     return result
+---
+>     return False
+177,179c192,196
+<             if clause.rest != nil:
+<                 return eval_all(clause.rest, env)
+<             return test
+---
+>             value = clause.rest
+>             if clause.rest is nil:
+>                 return test # return the predicate value when no corresponding result sub-expression
+>             else:
+>                 return eval_all(value, env)
+204,221c221,226
+<     # use set because search duplicate items in it is O(1),when in list is O(N)
+<     seen_names = set()
+<     while bindings:
+<         current = bindings.first
+<         if not scheme_listp(current) or current.rest is nil:
+<             raise SchemeError(f'bad binding in let {current}')
+<         if current.rest.rest is not nil:
+<             raise SchemeError(f'bad bindings list in {current}')
+< 
+<         var = current.first
+<         if not scheme_symbolp(var):
+<             raise SchemeError(f"invalid symbol: {var}")
+<         if var in seen_names:
+<             raise SchemeError(f"duplicate binding for {var}")
+< 
+<         seen_names.add(var)
+<         names = Pair(var, names)
+<         vals = Pair(scheme_eval(current.rest.first, env), vals)
+---
+>     while bindings != nil:
+>         validate_form(bindings.first, 2, 2) # bindings.first has an exact length of 2 (name and val)
+>         name = bindings.first.first
+>         val = scheme_eval(bindings.first.rest.first, env)
+>         names = Pair(name, names)
+>         vals = Pair(val, vals)
+222a228,231
+>     
+>     validate_formals(names) # validate its argument is a scheme list of **symbols**.
+>                             # Do not use `validate_formals(vals)`, or it gives a "no-symbol" SchemeError
+>     # END PROBLEM 14
+264c273,274
+<     return MuProcedure(formals, expressions.rest)
+---
+>     body = expressions.rest
+>     return MuProcedure(formals, body)
+282c292
+< }
+---
+> }
+\ 文件末尾没有换行符
+二进制文件 ./scheme_reader 和 /home/kino/Documents/UCBerkeley-CS61A-Fall2023-Projects-04_scheme/scheme_reader 不同
+只在 ./ 中存在：tests
