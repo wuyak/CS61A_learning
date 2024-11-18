@@ -119,3 +119,19 @@ class MuProcedure(Procedure):
     def __repr__(self):
         return 'MuProcedure({0}, {1})'.format(
             repr(self.formals), repr(self.body))
+
+class MacroProcedure(LambdaProcedure):
+    """A macro procedure that operates on its unevaluated operands."""
+    
+    def __init__(self, formals, body, env):
+        super().__init__(formals, body, env)
+        self.name = 'macro'
+
+    def __str__(self):
+        return '#[macro-procedure]'
+
+    def eval_call(self, operands, env):
+        """Evaluate this macro on the given operands."""
+        new_env = self.env.make_child_frame(self.formals, operands)
+        result = eval_all(self.body, new_env)
+        return scheme_eval(result, env)

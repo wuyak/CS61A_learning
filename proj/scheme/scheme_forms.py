@@ -222,7 +222,22 @@ def do_mu_form(expressions, env):
     "*** YOUR CODE HERE ***"
     # END PROBLEM 11
 
-
+def do_define_macro(expressions, env):
+    """Evaluate a define-macro form."""
+    validate_form(expressions, 2)
+    target = expressions.first
+    
+    if isinstance(target, Pair) and scheme_symbolp(target.first):
+        # 处理 (define-macro (name param...) body...) 形式
+        macro_name = target.first
+        formals = target.rest
+        validate_formals(formals)
+        body = expressions.rest
+        macro_procedure = MacroProcedure(formals, body, env)
+        env.define(macro_name, macro_procedure)
+        return macro_name
+    else:
+        raise SchemeError('bad macro definition')
 
 SPECIAL_FORMS = {
     'and': do_and_form,
@@ -237,4 +252,5 @@ SPECIAL_FORMS = {
     'quasiquote': do_quasiquote_form,
     'unquote': do_unquote,
     'mu': do_mu_form,
+    'define-macro': do_define_macro,
 }
