@@ -279,15 +279,15 @@ def do_define_macro(expressions, env):
     1
     """
     validate_form(expressions, 2)
-    signature = expressions.first
-    if not scheme_pairp(signature):
-        raise SchemeError('non-list macro signature')
-    name = signature.first
-    formals = signature.rest
-    body = expressions.rest
-    env.define(name, MacroProcedure(formals, body, env))
-    return name
-
+    target = expressions.first
+    if isinstance(target, Pair) and scheme_symbolp(target.first):
+        func_name = target.first
+        formals = target.second
+        body = expressions.second
+        env.define(func_name, MacroProcedure(formals, body, env))
+        return func_name
+    else:
+        raise SchemeError('invalid use of macro')
 
 SPECIAL_FORMS = {
     'and': do_and_form,
@@ -304,16 +304,3 @@ SPECIAL_FORMS = {
     'unquote': do_unquote,
     'mu': do_mu_form,
 }
-
-class MacroProcedure(LambdaProcedure):
-    """A macro: a special form that operates on its unevaluated operands to
-    create an expression that is evaluated in place of a call."""
-    def __init__(self, formals, body, env):
-        super().__init__(formals, body, env)
-        self.name = 'macro'
-
-    def eval_call(self, operands, env):
-        """Evaluate a call to this macro, returning a Scheme expression."""
-        new_env = self.env.make_child_frame(self.formals, operands)
-        result = complete_eval(self.body, new_env)
-        return scheme_eval(result, env)
