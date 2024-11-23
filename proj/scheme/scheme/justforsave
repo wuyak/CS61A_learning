@@ -1,0 +1,19 @@
+
+def do_define_macro(expressions, env):
+    """Evaluate a define-macro form.
+    >>> env = create_global_frame()
+    >>> do_define_macro(read_line("((f x) (car x))"), env)
+    'f'
+    >>> scheme_eval(read_line("(f (1 2))"), env)
+    1
+    """
+    validate_form(expressions, 2)
+    target = expressions.first
+    if isinstance(target, Pair) and scheme_symbolp(target.first):
+        func_name = target.first
+        formals = target.rest
+        body = expressions.rest
+        env.define(func_name, MacroProcedure(formals, body, env))
+        return func_name
+    else:
+        raise SchemeError('invalid use of macro')

@@ -270,6 +270,7 @@ def do_mu_form(expressions, env):
     return MuProcedure(formals, expressions.rest)
     # END PROBLEM 11
 
+PRINT_FORMALS_BODY = True
 def do_define_macro(expressions, env):
     """Evaluate a define-macro form.
     >>> env = create_global_frame()
@@ -282,8 +283,8 @@ def do_define_macro(expressions, env):
     target = expressions.first
     if isinstance(target, Pair) and scheme_symbolp(target.first):
         func_name = target.first
-        formals = target.second
-        body = expressions.second
+        formals = target.rest
+        body = expressions.rest
         env.define(func_name, MacroProcedure(formals, body, env))
         return func_name
     else:

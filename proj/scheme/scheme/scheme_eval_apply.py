@@ -10,7 +10,7 @@ import scheme_forms
 ##############
 # Eval/Apply #
 ##############
-
+PRINT_EXPRESSIONS = False
 def scheme_eval(expr, env, _=None): # Optional third argument is ignored
     """Evaluate Scheme expression EXPR in Frame ENV.
 
@@ -30,6 +30,8 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
     if not scheme_listp(expr):
         raise SchemeError('malformed list: {0}'.format(repl_str(expr)))
     first, rest = expr.first, expr.rest
+    if PRINT_EXPRESSIONS:
+        print("first, rest",first, rest)
     if scheme_symbolp(first) and first in scheme_forms.SPECIAL_FORMS:
         return scheme_forms.SPECIAL_FORMS[first](rest, env)
     else:

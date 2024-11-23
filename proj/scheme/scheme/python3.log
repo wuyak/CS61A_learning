@@ -1,0 +1,29 @@
+Tracing: /home/kino/CS61A/proj/scheme/scheme.py with arguments: ['/home/kino/CS61A/course_py/ex.scm']
+Function called: <module> in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: SchemeError in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: Frame in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: Procedure in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: BuiltinProcedure in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: LambdaProcedure in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: MuProcedure in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: MacroProcedure in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: Unevaluated in /home/kino/CS61A/proj/scheme/scheme/scheme_eval_apply.py
+Function called: optimize_tail_calls in /home/kino/CS61A/proj/scheme/scheme/scheme_eval_apply.py
+Function called: __init__ in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: define in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+scm> (define-macro (twice expr)
+                   (list 'begin expr expr))
+Function called: optimized_eval in /home/kino/CS61A/proj/scheme/scheme/scheme_eval_apply.py
+Function called: scheme_eval in /home/kino/CS61A/proj/scheme/scheme/scheme_eval_apply.py
+Function called: do_define_macro in /home/kino/CS61A/proj/scheme/scheme/scheme_forms.py
+twice
+scm> (twice (print 2))
+Function called: lookup in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: <lambda> in /home/kino/CS61A/proj/scheme/scheme/scheme_eval_apply.py
+Function called: scheme_apply in /home/kino/CS61A/proj/scheme/scheme/scheme_eval_apply.py
+2
+Function called: make_child_frame in /home/kino/CS61A/proj/scheme/scheme/scheme_classes.py
+Function called: eval_all in /home/kino/CS61A/proj/scheme/scheme/scheme_eval_apply.py
+Function called: do_quote_form in /home/kino/CS61A/proj/scheme/scheme/scheme_forms.py
+(begin undefined undefined)
+
